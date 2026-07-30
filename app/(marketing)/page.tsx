@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarGroup } from "@/components/ui/avatar"
+import { Section } from "@/components/patterns/section"
 
 const FEATURES = [
   {
@@ -37,8 +38,8 @@ const FEATURES = [
 
 export default function Home() {
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-16 px-6 py-16">
-      <section className="flex flex-col items-center gap-4 text-center">
+    <main className="flex flex-1 flex-col">
+      <Section className="flex flex-col items-center gap-4 py-16 text-center">
         <Badge variant="secondary">Next.js · TypeScript · Tailwind · shadcn/ui</Badge>
         <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
           모던 웹 개발을 위한 Starter Kit
@@ -61,9 +62,9 @@ export default function Home() {
             <a href="#components">컴포넌트 보기</a>
           </Button>
         </div>
-      </section>
+      </Section>
 
-      <section id="features" className="grid gap-4 sm:grid-cols-3">
+      <Section id="features" className="gap-4 py-16 grid sm:grid-cols-3">
         {FEATURES.map(({ icon: Icon, title, description }) => (
           <Card key={title}>
             <CardHeader>
@@ -73,11 +74,13 @@ export default function Home() {
             </CardHeader>
           </Card>
         ))}
-      </section>
+      </Section>
 
-      <Separator />
+      <Section className="py-0">
+        <Separator />
+      </Section>
 
-      <section id="components" className="grid gap-6 sm:grid-cols-2">
+      <Section id="components" className="gap-6 py-16 grid sm:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>버튼 &amp; 아바타</CardTitle>
@@ -130,7 +133,7 @@ export default function Home() {
             </Button>
           </CardContent>
         </Card>
-      </section>
+      </Section>
     </main>
   )
 }
