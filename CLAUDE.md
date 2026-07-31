@@ -39,6 +39,10 @@ Commit messages use numbered steps in Korean:
 
 Example: `5단계: 오류 해결 및 기능 완성 (로그인/회원가입 리다이렉트 + 헤더 네비게이션)`
 
+## Code Review
+
+코드 구현(신규 작성 또는 수정)을 완료한 직후, `code-reviewer` 서브에이전트(`.claude/agents/code-reviewer.md`)를 호출해 변경사항을 검토한다. 호출 시 변경된 파일 경로 또는 `git diff` 내용을 프롬프트에 포함해 전달한다. 리뷰 리포트는 사용자에게 요약해 전달하고, 실제 수정은 사용자 확인 후 진행한다.
+
 ## Next.js 16 Breaking Changes
 
 See `AGENTS.md` — this version has API and convention differences from older Next.js. Key changes:
