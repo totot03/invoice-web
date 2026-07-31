@@ -1,7 +1,10 @@
+import Link from "next/link"
+
 import { Logo } from "@/components/patterns/logo"
 import { MobileNav } from "@/components/patterns/mobile-nav"
 import { NavLink } from "@/components/patterns/nav-link"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { Button } from "@/components/ui/button"
 
 const NAV_ITEMS = [
   { href: "#features", label: "기능" },
@@ -24,6 +27,14 @@ export function SiteHeader() {
         </nav>
         <div className="flex items-center gap-2">
           <MobileNav items={NAV_ITEMS} />
+          <div className="hidden items-center gap-2 sm:flex">
+            <Button variant="ghost" asChild>
+              <Link href="/login">로그인</Link>
+            </Button>
+            <Button asChild>
+              <Link href="/register">회원가입</Link>
+            </Button>
+          </div>
           <ThemeToggle />
         </div>
       </div>

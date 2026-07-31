@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
@@ -14,6 +15,7 @@ import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
 export default function LoginPage() {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
 
@@ -44,8 +46,7 @@ export default function LoginPage() {
         toast.success("로그인 성공!", {
           description: "환영합니다.",
         })
-        // 실제로는 여기서 redirect를 사용합니다
-        // redirect("/dashboard")
+        router.push("/dashboard")
       } else {
         setError("이메일 또는 비밀번호가 일치하지 않습니다.")
       }

@@ -1,6 +1,7 @@
-"use client"
+'use client'
 
-import { MenuIcon, XIcon } from "lucide-react"
+import Link from "next/link"
+import { MenuIcon } from "lucide-react"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
@@ -9,6 +10,7 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import { Separator } from "@/components/ui/separator"
 import { NavLink } from "./nav-link"
 
 interface NavItem {
@@ -43,6 +45,15 @@ export function MobileNav({ items }: MobileNavProps) {
             />
           ))}
         </nav>
+        <Separator className="my-4" />
+        <div className="flex flex-col gap-2">
+          <Button variant="ghost" asChild className="justify-start">
+            <Link href="/login" onClick={() => setOpen(false)}>로그인</Link>
+          </Button>
+          <Button asChild className="justify-start">
+            <Link href="/register" onClick={() => setOpen(false)}>회원가입</Link>
+          </Button>
+        </div>
       </SheetContent>
     </Sheet>
   )

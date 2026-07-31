@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
@@ -14,6 +15,7 @@ import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
 export default function RegisterPage() {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
 
@@ -45,8 +47,7 @@ export default function RegisterPage() {
         description: "이제 로그인할 수 있습니다.",
       })
 
-      // 실제로는 여기서 redirect를 사용합니다
-      // redirect("/login")
+      router.push("/login")
     } catch (err) {
       setError("회원가입 중 오류가 발생했습니다.")
     } finally {
