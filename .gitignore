@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# claude code hooks & logs (local development)
+.claude/hooks/*.log
+
+# scratch / temp test files (local development)
+/test.txt
+/text.txt
+/hook-test.txt
