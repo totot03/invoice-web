@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -42,6 +43,9 @@ next-env.d.ts
 
 # claude code hooks & logs (local development)
 .claude/hooks/*.log
+
+# claude code plan files (may contain sensitive working notes)
+.claude/plans/
 
 # scratch / temp test files (local development)
 /test.txt

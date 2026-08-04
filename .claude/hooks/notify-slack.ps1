@@ -20,9 +20,40 @@ function Format-MaskedUrl {
 try {
     Write-LogEvent "EXEC: EventType=$EventType | WebhookSet=$(if ($env:SLACK_WEBHOOK_URL) { 'Yes' } else { 'No' })"
 
-    $webhookUrl = $env:SLACK_WEBHOOK_URL
+    # .env 파일에서 SLACK_WEBHOOK_URL 로드 (프로젝트 루트에서 scriptDir은 .\.claude\hooks\ 이므로 두 단계 상위)
+    $webhookUrl = $null
+    $projectRoot = Split-Path (Split-Path $scriptDir)
+    $envFilePath = Join-Path $projectRoot ".env"
+
+    if (Test-Path $envFilePath) {
+        try {
+            # 라인 단위로 읽어서 SLACK_WEBHOOK_URL= 라인을 찾기 (정규식 대신 간단한 문자열 처리)
+            foreach ($line in @(Get-Content $envFilePath -Encoding UTF8)) {
+                if ($line -match '^\s*SLACK_WEBHOOK_URL\s*=') {
+                    # 값 추출: = 뒤의 모든 내용 (따옴표와 주석 제거)
+                    $value = $line -replace '^\s*SLACK_WEBHOOK_URL\s*=\s*[''"]?', '' -replace '[''"]?\s*(?:#.*)?$', ''
+                    if ($value) {
+                        $webhookUrl = $value.Trim()
+                        Write-LogEvent "INFO: SLACK_WEBHOOK_URL loaded from .env file"
+                        break
+                    }
+                }
+            }
+        } catch {
+            Write-LogEvent "WARN: Failed to parse .env file - $(Format-MaskedUrl $_.Exception.Message)"
+        }
+    }
+
+    # .env에서 못 찾으면 환경변수에서 읽기 (폴백)
     if (-not $webhookUrl) {
-        Write-LogEvent "SKIP: SLACK_WEBHOOK_URL not set (environment variable)"
+        $webhookUrl = $env:SLACK_WEBHOOK_URL
+        if ($webhookUrl) {
+            Write-LogEvent "INFO: SLACK_WEBHOOK_URL loaded from environment variable"
+        }
+    }
+
+    if (-not $webhookUrl) {
+        Write-LogEvent "SKIP: SLACK_WEBHOOK_URL not found in .env or environment variable"
         exit 0
     }
 
