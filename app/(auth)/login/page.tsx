@@ -11,7 +11,7 @@ import { loginSchema, type LoginInput } from "@/lib/validations/auth"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Field, FieldGroup, FieldLabel, FieldDescription, FieldError } from "@/components/ui/field"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
 export default function LoginPage() {
@@ -40,7 +40,7 @@ export default function LoginPage() {
       // const response = await fetch("/api/auth/login", { ... })
 
       // 데모용 시뮬레이션
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      await new Promise(resolve => setTimeout(resolve, 1000))
 
       if (data.email === "demo@example.com" && data.password === "demo123456") {
         toast.success("로그인 성공!", {
@@ -50,7 +50,7 @@ export default function LoginPage() {
       } else {
         setError("이메일 또는 비밀번호가 일치하지 않습니다.")
       }
-    } catch (err) {
+    } catch (_err) {
       setError("로그인 중 오류가 발생했습니다.")
     } finally {
       setIsLoading(false)
@@ -59,63 +59,62 @@ export default function LoginPage() {
 
   return (
     <Card>
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl">로그인</CardTitle>
-        <CardDescription>
-          계정에 로그인하세요
-        </CardDescription>
+      <CardHeader>
+        <CardTitle>로그인</CardTitle>
+        <CardDescription>이메일을 입력하고 계정에 로그인하세요</CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {error && (
-            <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-
-          <div className="space-y-2">
-            <Label htmlFor="email">이메일</Label>
-            <Input
-              id="email"
-              placeholder="you@example.com"
-              type="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              disabled={isLoading}
-              {...register("email")}
-            />
-            {errors.email && (
-              <p className="text-sm font-medium text-destructive">{errors.email.message}</p>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FieldGroup>
+            {error && (
+              <Alert variant="destructive">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
             )}
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="password">비밀번호</Label>
-            <Input
-              id="password"
-              placeholder="••••••••"
-              type="password"
-              autoComplete="current-password"
-              disabled={isLoading}
-              {...register("password")}
-            />
-            {errors.password && (
-              <p className="text-sm font-medium text-destructive">{errors.password.message}</p>
-            )}
-          </div>
+            <Field>
+              <FieldLabel htmlFor="email">이메일</FieldLabel>
+              <Input
+                id="email"
+                placeholder="you@example.com"
+                type="email"
+                autoCapitalize="none"
+                autoComplete="email"
+                autoCorrect="off"
+                aria-invalid={!!errors.email}
+                disabled={isLoading}
+                {...register("email")}
+              />
+              <FieldError errors={errors.email ? [errors.email] : undefined} />
+            </Field>
 
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "로그인 중..." : "로그인"}
-          </Button>
+            <Field>
+              <FieldLabel htmlFor="password">비밀번호</FieldLabel>
+              <Input
+                id="password"
+                placeholder="••••••••"
+                type="password"
+                autoComplete="current-password"
+                aria-invalid={!!errors.password}
+                disabled={isLoading}
+                {...register("password")}
+              />
+              <FieldError errors={errors.password ? [errors.password] : undefined} />
+            </Field>
+
+            <Field>
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? "로그인 중..." : "로그인하기"}
+              </Button>
+              <FieldDescription className="text-center">
+                계정이 없으신가요?{" "}
+                <Link href="/register" className="underline hover:text-primary">
+                  회원가입
+                </Link>
+              </FieldDescription>
+            </Field>
+          </FieldGroup>
         </form>
-
-        <div className="mt-4 text-center text-sm">
-          계정이 없으신가요?{" "}
-          <Link href="/register" className="underline hover:text-primary">
-            회원가입
-          </Link>
-        </div>
 
         <div className="mt-6 space-y-2 rounded-lg bg-muted p-4 text-sm">
           <p className="font-semibold">데모 계정:</p>
