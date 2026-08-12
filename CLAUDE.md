@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**견적서 웹 뷰어 & PDF 다운로드**는 Notion에 입력한 견적서를 클라이언트가 웹에서 확인하고 PDF로 저장할 수 있게 하는 MVP입니다.
+
+📋 상세 프로젝트 요구사항은 `docs/PRD.md` 참조
+
 ## Building & Development
 
 - **`npm run dev`** — Start Next.js dev server (localhost:3000)
@@ -14,7 +18,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Code Style & Structure
 
 - **TypeScript**: `strict: true`, ES2017 target, `@/*` alias to root
-- **React 19**: App Router, RSC enabled, three route groups — `(marketing)`, `(auth)`, `(dashboard)`
+- **React 19**: App Router, RSC enabled, two route groups — `(auth)`, `(dashboard)` (마케팅 랜딩 페이지 없음 — 진입점은 로그인)
 - **Styling**: Tailwind CSS v4 (PostCSS plugin), shadcn/ui (Radix Nova style), `next-themes` (system/light/dark)
 - **Icons**: lucide-react (^1.28.0)
 - **Forms**: react-hook-form + Zod with Korean error messages; see `lib/validations/auth.ts`
@@ -24,8 +28,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Components & Patterns
 
 - **`components/ui/`** — shadcn/ui components (copy-paste from registry)
-- **`components/layouts/`** — Page layout wrappers: `marketing-layout`, `auth-layout`, `dashboard-layout`, `site-header`, `site-footer`, `dashboard-header`, `dashboard-sidebar`
-- **`components/patterns/`** — Reusable patterns: `empty-state`, `nav-link`, `user-menu`, `page-header`, `stat-card`, `logo`, `mobile-nav`, `section`
+- **`components/layouts/`** — Page layout wrappers: `auth-layout`, `dashboard-layout`, `dashboard-header`, `dashboard-sidebar`
+- **`components/patterns/`** — Reusable patterns: `empty-state`, `nav-link`, `user-menu`, `page-header`, `stat-card`, `logo`
 
 ## Error Handling & Auth
 
@@ -43,6 +47,7 @@ Example: `5단계: 오류 해결 및 기능 완성 (로그인/회원가입 리�
 ## Code Review
 
 코드 구현(신규 작성 또는 수정)을 완료한 직후 리뷰를 요청한다. 두 가지 방법이 있다:
+
 - **`/review:code` 커맨드** (`.claude/commands/review/code.md`) — 슬래시 커맨드로 직접 실행, `git diff HEAD` 또는 지정 경로 전체 리뷰
 - **`code-reviewer` 서브에이전트** (`.claude/agents/code-reviewer.md`) — 명시적 호출 시 백그라운드 전문 에이전트 실행
 
@@ -51,6 +56,7 @@ Example: `5단계: 오류 해결 및 기능 완성 (로그인/회원가입 리�
 ## Next.js 16 Breaking Changes
 
 See `AGENTS.md` — this version has API and convention differences from older Next.js. Key changes:
+
 - Error boundary callback is `unstable_retry`, not `reset` (current code still uses `reset` — Next.js 16 tolerates it, but new error boundaries should use `unstable_retry()`)
 - Middleware is superseded by `proxy.ts` file convention (this project uses neither yet; when adding auth/redirect logic, use `proxy.ts` not `middleware.ts`)
 - Server vs. Client Component boundary is strict (RSC rules apply)
