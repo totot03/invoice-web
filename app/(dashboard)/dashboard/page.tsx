@@ -1,55 +1,52 @@
-import { BarChart3Icon, TrendingUpIcon, UsersIcon, ActivityIcon } from "lucide-react"
+import { FileTextIcon, LinkIcon } from "lucide-react"
 
-import { StatCard } from "@/components/patterns/stat-card"
 import { PageHeader } from "@/components/patterns/page-header"
+import { Button } from "@/components/ui/button"
+
+// TODO: Notion 데이터베이스 연동(F001) 완료 후 이 배열을 실제 조회 결과로 교체한다.
+// 견적서 항목: 고객명, 금액, 작성일 등 (docs/PRD.md 데이터 모델 참고)
+const quotes: Array<{
+  id: string
+  customerName: string
+  amount: string
+  createdAt: string
+}> = []
 
 export default function DashboardPage() {
   return (
     <div className="space-y-8">
       <PageHeader
-        title="대시보드"
-        description="시스템의 주요 지표를 한눈에 확인하세요"
+        title="견적서 목록"
+        description="Notion에서 가져온 견적서를 확인하고 공유 링크를 관리하세요"
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard
-          title="총 매출"
-          value="$45,231.89"
-          description="전월 대비"
-          icon={TrendingUpIcon}
-          trend="up"
-          trendValue="+12.5%"
-        />
-        <StatCard
-          title="사용자"
-          value="2,543"
-          description="활성 사용자"
-          icon={UsersIcon}
-          trend="up"
-          trendValue="+8.2%"
-        />
-        <StatCard
-          title="판매량"
-          value="12,234"
-          description="이번 주"
-          icon={BarChart3Icon}
-          trend="down"
-          trendValue="-3.1%"
-        />
-        <StatCard
-          title="활동"
-          value="86%"
-          description="플랫폼 가동률"
-          icon={ActivityIcon}
-        />
-      </div>
-
-      <div className="rounded-lg border bg-muted/50 p-8 text-center">
-        <h3 className="text-lg font-semibold">대시보드 기능 개발 중</h3>
-        <p className="text-muted-foreground">
-          더 많은 대시보드 페이지와 데이터 시각화를 추가할 수 있습니다.
-        </p>
-      </div>
+      {quotes.length === 0 ? (
+        <div className="flex flex-col items-center gap-3 rounded-lg border bg-muted/50 p-12 text-center">
+          <FileTextIcon className="size-10 text-muted-foreground" />
+          <h3 className="text-lg font-semibold">아직 연결된 견적서가 없습니다</h3>
+          <p className="max-w-sm text-sm text-muted-foreground">
+            Notion 데이터베이스와 연동하면 이곳에 견적서 목록이 표시됩니다. 견적서를 선택하면 공유
+            링크를 생성하거나 미리보기로 열람할 수 있습니다.
+          </p>
+        </div>
+      ) : (
+        <div className="divide-y rounded-lg border">
+          {quotes.map(quote => (
+            <div key={quote.id} className="flex items-center justify-between gap-4 p-4">
+              <div>
+                <p className="font-medium">{quote.customerName}</p>
+                <p className="text-sm text-muted-foreground">
+                  {quote.amount} · {quote.createdAt}
+                </p>
+              </div>
+              <Button variant="outline" size="sm">
+                <LinkIcon className="size-4" />
+                공유 링크 복사
+              </Button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
